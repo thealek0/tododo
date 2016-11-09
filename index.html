@@ -27,7 +27,7 @@
                     </span>
                 </div>
                 <ul class="nav nav-sidebar">
-                    <li ng-click="selectList($index)" ng-repeat="a in mainData.list" ng-class="{'active': $index == mainData.selectedItem }">
+                    <li ng-click="selectList($index)" ng-repeat="a in mainData.list track by $index" ng-class="{'active': $index == mainData.selectedItem }">
                         <a href="#{{$index}}">
                             <span>{{a.title}}</span>
                             <span class="pull-right">
