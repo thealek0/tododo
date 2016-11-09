@@ -1,0 +1,32 @@
+<div>
+    <h1 class="page-header">{{listData.list.title}}
+     <span class="pull-right">
+            <button type="button" class="btn btn-xs" ng-click="listData.removeList()">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+     </span>
+    </h1>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="listData.templateTask.title">
+        <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="listData.addTask()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+        </span>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="a in listData.list.tasks">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="a.done" ng-change="listData.changeItem()">
+                </span>
+                <input type="text" class="form-control" ng-model="a.title">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="listData.removeTask($index)">
+                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+                </span>
+            </div>
+        </li>
+    </ul>
+</div>

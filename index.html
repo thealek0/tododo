@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body ng-app="ToDoApp">
+    <div ng-controller="myCtrl" class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 sidebar">
+                <h1 class="page-header">Boards</h1>
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="mainData.templateBoard.title">
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="mainData.addBoard()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                    </span>
+                </div>
+                <ul class="nav nav-sidebar">
+                    <li ng-click="selectList($index)" ng-repeat="a in mainData.list" ng-class="{'active': $index == mainData.selectedItem }">
+                        <a href="#{{$index}}">
+                            <span>{{a.title}}</span>
+                            <span class="pull-right">
+                            <button type="button" class="btn btn-xs" ng-click="mainData.removeBoard($index)">
+                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            </button>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-9 ">
+                <div class="ng-view">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

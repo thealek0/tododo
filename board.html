@@ -1,0 +1,23 @@
+<div>
+    <h1 class="page-header">{{boardData.item.title}}</h1>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="boardData.templateList.title">
+        <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="boardData.addList()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+        </span>
+    </div>
+    <div class="list-group">
+    </div>
+    <div class="col-sm-6 col-md-4" ng-repeat="a in boardData.item.lists">
+        <a ng-href="#{{boardData.boardId}}/{{$index}}">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>{{a.title}}</h3>
+                    <p>{{a.countDone}} of {{a.tasks.length}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
