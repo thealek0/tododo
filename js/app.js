@@ -92,7 +92,7 @@ app.config(function($routeProvider) {
         }
     })
 
-.factory('Data', function() {
+.factory('Data', function($localstorage) {
 
     var data = {
         boards: [{
@@ -145,6 +145,10 @@ app.config(function($routeProvider) {
 
     return {
         getBoards: function() {
+            var d = $localstorage.getObject('data');
+            if(d.length > 0) {
+                data.boards = d;
+            }
             return data.boards;
         },
         getBoardByInd: function(_board_ind) {
@@ -152,9 +156,11 @@ app.config(function($routeProvider) {
         },
         addBoard: function(_board) {
             data.boards.push(_board);
+            $localstorage.setObject('data', data.boards);
         },
         removeBoard: function(_board_ind) {
             data.boards.splice(_board_ind, 1);
+            $localstorage.setObject('data', data.boards);
         },
         getListsOfBoard: function(_board_ind) {
             return data.boards[_board_ind].lists;
@@ -164,15 +170,36 @@ app.config(function($routeProvider) {
         },
         addList: function(_board_ind, _list) {
             data.boards[_board_ind].lists.push(_list);
+            $localstorage.setObject('data', data.boards);
         },
         removeList: function(_board_ind, _list_ind) {
             data.boards[_board_ind].lists.splice(_list_ind, 1);
+            $localstorage.setObject('data', data.boards);
         },
         addTask: function(_board_ind, _list_ind, _task) {
             data.boards[_board_ind].lists[_list_ind].tasks.push(_task);
+            $localstorage.setObject('data', data.boards);
         },
         removeTask: function(_board_ind, _list_ind, _task_ind) {
             data.boards[_board_ind].lists[_list_ind].tasks.splice(_task_ind, 1);
+            $localstorage.setObject('data', data.boards);
         }
     };
-});
+})
+
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+}]);
