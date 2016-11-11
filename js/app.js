@@ -140,18 +140,103 @@ app.config(function($routeProvider) {
 })
 
 .factory('$localstorage', ['$window', function($window) {
-  return {
-    set: function(key, value) {
-      $window.localStorage[key] = value;
-    },
-    get: function(key, defaultValue) {
-      return $window.localStorage[key] || defaultValue;
-    },
-    setObject: function(key, value) {
-      $window.localStorage[key] = JSON.stringify(value);
-    },
-    getObject: function(key) {
-      return JSON.parse($window.localStorage[key] || '{}');
+    return {
+        set: function(key, value) {
+            $window.localStorage[key] = value;
+        },
+        get: function(key, defaultValue) {
+            return $window.localStorage[key] || defaultValue;
+        },
+        setObject: function(key, value) {
+            $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function(key) {
+            return JSON.parse($window.localStorage[key] || '{}');
+        }
     }
-  }
-}]);
+}])
+
+.directive('accessManagement', function() {
+    return {
+        restrict: 'E',
+        link: function(scope) {
+
+            scope.dataTemplate = {
+                valid: true,
+                perms: [{ id: 0, title: 'Read' }, { id: 1, title: 'Write' }, { id: 2, title: 'Admin' }],
+                selected_user: null,
+                selected_perm: { id: 0, title: 'Read' },
+                search_model: "",
+                added_users: [],
+                all_users: [{
+                    name: 'Щукин Валерий Вадимович',
+                    perm: 0
+                }, {
+                    name: 'Константинова Ирина Матвеевна',
+                    perm: 1
+                }, {
+                    name: 'Крылова Анна Святославовна',
+                    perm: 2
+                }, {
+                    name: 'Сысоев Лаврентий Станиславович',
+                    perm: 1
+                }, {
+                    name: 'Филатова Фаина Борисовна',
+                    perm: 0
+                }, {
+                    name: 'Суворов Варлам Германнович',
+                    perm: 1
+                }, {
+                    name: 'Авдеев Руслан Мэлсович',
+                    perm: 0
+                }]
+            }
+
+            scope.addUser = function() {
+
+                scope.dataTemplate.valid = scope.dataTemplate.selected_user != null ? true : false;
+
+                if (scope.dataTemplate.valid) {
+                    scope.dataTemplate.selected_user.perm = scope.dataTemplate.selected_perm.id;
+                    scope.dataTemplate.added_users.push(scope.dataTemplate.selected_user);
+                    scope.dataTemplate.selected_user = null;
+                }
+            }
+
+            function checkExistUser(_user) {
+                return scope.dataTemplate.added_users.indexOf(_user) !== -1;
+            }
+            scope.removeUser = function(_user) {
+                var _ind = scope.dataTemplate.added_users.indexOf(_user);
+                scope.dataTemplate.added_users.splice(_ind, 1);
+            }
+            scope.selectUser = function(_user) {
+                scope.dataTemplate.selected_user = _user;
+                scope.dataTemplate.search_model = scope.dataTemplate.selected_user.name;
+            }
+            scope.changeSearch = function () {
+                scope.dataTemplate.valid = scope.dataTemplate.search_model.length > 0 ? true : false;
+            }
+        },
+        templateUrl: function() {
+            return 'add_user.html';
+        }
+    }
+})
+
+.filter('matcher', function() {
+    return function(arr1, arr2) {
+
+        var out_arr = arr1;
+
+        for (var i = 0; i < arr1.length; i++) {
+            for (var j = 0; j < arr2.length; j++) {
+                if (arr2[j].name == arr1[i].name) {
+                    out_arr.splice(i, 1);
+                }
+            }
+        }
+
+        return out_arr;
+    }
+}f
